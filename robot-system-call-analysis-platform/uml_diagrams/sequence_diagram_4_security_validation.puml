@@ -1,0 +1,155 @@
+@startuml Sequence_Diagram_4_Security_Validation
+
+title Sequence Diagram 4: Sensor Data Validation and Security Response
+
+actor "System Administrator" as admin
+participant "Dashboard" as dashboard
+participant "SecurityMonitor" as security
+participant "DataIntegrityChecker" as checker
+participant "RobotController" as controller
+participant "LiDARSensor" as lidar
+participant "GPSSensor" as gps
+participant "CameraSensor" as camera
+participant "IMUSensor" as imu
+
+== Normal Operation ==
+admin -> dashboard : Monitor robot sensors
+activate dashboard
+dashboard -> security : Request sensor status
+activate security
+
+security -> lidar : getStatus()
+activate lidar
+lidar --> security : Status: Active, 10Hz scanning
+deactivate lidar
+
+security -> gps : getStatus()
+activate gps
+gps --> security : Status: Active, 8 satellites
+deactivate gps
+
+security -> camera : getStatus()
+activate camera
+camera --> security : Status: Active, 30fps
+deactivate camera
+
+security -> imu : getStatus()
+activate imu
+imu --> security : Status: Active, 100Hz sampling
+deactivate imu
+
+security --> dashboard : All sensors operational
+deactivate security
+dashboard --> admin : Display green status indicators
+
+== Sensor Data Collection ==
+loop Every 100ms
+    lidar -> lidar : generatePointCloud()
+    lidar -> checker : validateSensorData(pointCloudData)
+    activate checker
+    
+    checker -> checker : checkDataConsistency(data)
+    checker -> checker : detectTampering(data)
+    
+    alt Data Valid
+        checker --> lidar : ValidationResult: VALID
+        deactivate checker
+        lidar -> controller : sendData(validData)
+        activate controller
+        controller -> controller : processSensorData()
+        controller --> lidar : Data processed successfully
+        deactivate controller
+    else Data Tampered/Falsified
+        checker --> lidar : ValidationResult: TAMPERED
+        deactivate checker
+        
+        == Security Response ==
+        lidar -> security : reportTampering(tamperedData)
+        activate security
+        
+        security -> security : assessThreat(tamperedData)
+        security -> security : threatLevel = CRITICAL
+        
+        security -> controller : emergencyStop()
+        activate controller
+        controller -> controller : stopAllOperations()
+        controller -> controller : disableMovement()
+        controller --> security : Robot stopped
+        deactivate controller
+        
+        security -> dashboard : sendAlert(securityAlert)
+        activate dashboard
+        dashboard -> dashboard : showCriticalAlert()
+        dashboard --> admin : Display "🚨 SECURITY THREAT DETECTED!\nRobot stopped for safety"
+        deactivate dashboard
+        
+        security -> security : logSecurityEvent(event)
+        security --> lidar : Threat logged and mitigated
+        deactivate security
+    end
+end
+
+== Data Assessment Report ==
+admin -> dashboard : Click "View Security Report"
+dashboard -> security : getSecurityReport()
+activate security
+security -> checker : generateIntegrityReport()
+activate checker
+checker --> security : IntegrityReport with:
+note right
+  - Tampered data details
+  - Validation results
+  - Threat assessment
+  - Mitigation actions taken
+  - Recommended next steps
+end note
+deactivate checker
+
+security --> dashboard : SecurityReport
+deactivate security
+dashboard --> admin : Display detailed security report
+
+== Manual Override ==
+admin -> dashboard : Click "Manual Override" (if authorized)
+dashboard -> security : requestManualOverride()
+activate security
+security -> security : validateAdminPermissions()
+security -> controller : resumeOperation()
+activate controller
+controller -> controller : enableMovement()
+controller --> security : Operation resumed
+deactivate controller
+security --> dashboard : Override successful
+deactivate security
+dashboard --> admin : Display "Manual override active"
+
+deactivate dashboard
+
+note right of checker
+  Data Integrity Validation:
+  - Checks sensor data consistency
+  - Detects unusual patterns
+  - Validates against baseline
+  - Identifies potential tampering
+  - Generates integrity reports
+end note
+
+note right of security
+  Security Response Protocol:
+  1. Assess threat level
+  2. Stop robot immediately
+  3. Send alert to user
+  4. Log security event
+  5. Generate assessment report
+  6. Wait for manual override
+end note
+
+note right of controller
+  Robot Control Functions:
+  - Emergency stop capability
+  - Movement disable/enable
+  - Operation mode control
+  - Safety protocol enforcement
+end note
+
+@enduml

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low-Fidelity Prototype - Component Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .prototype-note {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border: 3px solid #333;
+        }
+        .header {
+            background: #e0e0e0;
+            border-bottom: 3px solid #333;
+            padding: 20px;
+        }
+        .breadcrumb {
+            padding: 15px 30px;
+            border-bottom: 2px solid #ccc;
+            font-size: 14px;
+            color: #666;
+        }
+        .main-content {
+            padding: 30px;
+        }
+        .component-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .component-chip {
+            border: 2px solid #333;
+            padding: 10px 20px;
+            background: white;
+            cursor: pointer;
+        }
+        .component-chip.active {
+            background: #333;
+            color: white;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-box {
+            border: 3px solid #333;
+            padding: 20px;
+            background: #f8f8f8;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+        }
+        .chart-section {
+            border: 3px solid #333;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f8f8;
+        }
+        .chart-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .pie-chart {
+            height: 300px;
+            background: white;
+            border: 2px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .pie-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid #333;
+            background: conic-gradient(
+                #333 0deg 165deg,
+                #666 165deg 245deg,
+                #999 245deg 295deg,
+                #ccc 295deg 360deg
+            );
+        }
+        .pie-legend {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            margin-right: 10px;
+        }
+        .timeline-chart {
+            height: 250px;
+            background: white;
+            border: 2px solid #333;
+            padding: 20px;
+            position: relative;
+        }
+        .timeline-line {
+            height: 80%;
+            border-left: 2px solid #333;
+            border-bottom: 2px solid #333;
+            position: relative;
+        }
+        .data-point {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+        }
+        .table-container {
+            border: 3px solid #333;
+            padding: 20px;
+            background: #f8f8f8;
+            margin-bottom: 20px;
+        }
+        .data-table {
+            width: 100%;
+            background: white;
+            border: 2px solid #333;
+            border-collapse: collapse;
+        }
+        .data-table th {
+            background: #333;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 2px solid #333;
+        }
+        .data-table td {
+            padding: 10px 12px;
+            border: 2px solid #333;
+        }
+        .data-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .button {
+            border: 2px solid #333;
+            padding: 12px 24px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-note">
+        <strong>📋 Low-Fidelity Prototype - Screen 3 of 5</strong><br>
+        Component analysis view showing detailed behavior and performance metrics for individual robot components.
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Component Analysis: global_planner</h1>
+        </div>
+
+        <div class="breadcrumb">
+            Dashboard > Component View > global_planner
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            
+            <!-- Component Selector -->
+            <div class="component-selector">
+                <div class="component-chip active">global_planner</div>
+                <div class="component-chip">front_ouster</div>
+                <div class="component-chip">os_cloud_node</div>
+                <div class="component-chip">local_planning</div>
+                <div class="component-chip">point_cloud_pipeline</div>
+                <div class="component-chip">min_z_classifier</div>
+                <div class="component-chip">omnigraph</div>
+                <div class="component-chip">goto_behavior</div>
+                <div class="component-chip">visual_cache</div>
+            </div>
+
+            <!-- Statistics Grid -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total System Calls</div>
+                    <div class="stat-value">22,672</div>
+                    <div class="stat-label">56.6% of all calls</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Avg Execution Time</div>
+                    <div class="stat-value">78μs</div>
+                    <div class="stat-label">9% faster than average</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Call Frequency</div>
+                    <div class="stat-value">6,341</div>
+                    <div class="stat-label">calls per second</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Active Processes</div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">PIDs: 1234, 1235, 1236</div>
+                </div>
+            </div>
+
+            <!-- System Call Distribution -->
+            <div class="chart-section">
+                <div class="chart-title">📊 System Call Distribution for global_planner</div>
+                <div class="pie-chart">
+                    <div class="pie-circle"></div>
+                    <div class="pie-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #333;"></div>
+                            <span>clock_gettime (46%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #666;"></div>
+                            <span>futex (22%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #999;"></div>
+                            <span>write (14%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ccc;"></div>
+                            <span>others (18%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Timeline -->
+            <div class="chart-section">
+                <div class="chart-title">📈 Call Frequency Over Time (Last 60 seconds)</div>
+                <div class="timeline-chart">
+                    <div class="timeline-line">
+                        <!-- Simulated data points -->
+                        <div class="data-point" style="left: 5%; bottom: 45%;"></div>
+                        <div class="data-point" style="left: 15%; bottom: 60%;"></div>
+                        <div class="data-point" style="left: 25%; bottom: 55%;"></div>
+                        <div class="data-point" style="left: 35%; bottom: 70%;"></div>
+                        <div class="data-point" style="left: 45%; bottom: 65%;"></div>
+                        <div class="data-point" style="left: 55%; bottom: 75%;"></div>
+                        <div class="data-point" style="left: 65%; bottom: 68%;"></div>
+                        <div class="data-point" style="left: 75%; bottom: 72%;"></div>
+                        <div class="data-point" style="left: 85%; bottom: 80%;"></div>
+                        <div class="data-point" style="left: 95%; bottom: 65%;"></div>
+                        
+                        <!-- Lines connecting points -->
+                        <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+                            <polyline points="5,55 15,40 25,45 35,30 45,35 55,25 65,32 75,28 85,20 95,35" 
+                                      stroke="#333" stroke-width="2" fill="none" />
+                        </svg>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 12px; color: #666;">
+                        Time axis (0s to 60s) →
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Call Details Table -->
+            <div class="table-container">
+                <div class="chart-title">🔍 Top System Calls by Frequency</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>System Call</th>
+                            <th>Count</th>
+                            <th>Percentage</th>
+                            <th>Avg Execution Time</th>
+                            <th>Total Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>clock_gettime</strong></td>
+                            <td>10,429</td>
+                            <td>46.0%</td>
+                            <td>0.000001s</td>
+                            <td>0.010s</td>
+                            <td>[View Details]</td>
+                        </tr>
+                        <tr>
+                            <td><strong>futex</strong></td>
+                            <td>5,008</td>
+                            <td>22.1%</td>
+                            <td>0.000002s</td>
+                            <td>0.010s</td>
+                            <td>[View Details]</td>
+                        </tr>
+                        <tr>
+                            <td><strong>write</strong></td>
+                            <td>3,174</td>
+                            <td>14.0%</td>
+                            <td>0.000256s</td>
+                            <td>0.813s</td>
+                            <td>[View Details]</td>
+                        </tr>
+                        <tr>
+                            <td><strong>select</strong></td>
+                            <td>2,040</td>
+                            <td>9.0%</td>
+                            <td>0.000100s</td>
+                            <td>0.204s</td>
+                            <td>[View Details]</td>
+                        </tr>
+                        <tr>
+                            <td><strong>read</strong></td>
+                            <td>1,361</td>
+                            <td>6.0%</td>
+                            <td>0.000045s</td>
+                            <td>0.061s</td>
+                            <td>[View Details]</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Others</strong></td>
+                            <td>660</td>
+                            <td>2.9%</td>
+                            <td>varies</td>
+                            <td>0.152s</td>
+                            <td>[View Details]</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Performance Insights -->
+            <div class="chart-section">
+                <div class="chart-title">💡 Performance Insights & Recommendations</div>
+                <div style="background: white; padding: 20px; border: 2px solid #333;">
+                    <div style="margin-bottom: 15px; padding: 10px; border-left: 4px solid #28a745; background: #d4edda;">
+                        <strong>✓ Normal Behavior</strong><br>
+                        System call patterns match expected behavior for global path planning component.
+                    </div>
+                    <div style="margin-bottom: 15px; padding: 10px; border-left: 4px solid #ffc107; background: #fff3cd;">
+                        <strong>⚠ Optimization Opportunity</strong><br>
+                        High frequency of clock_gettime calls (46%) suggests potential for timestamp caching.
+                    </div>
+                    <div style="padding: 10px; border-left: 4px solid #17a2b8; background: #d1ecf1;">
+                        <strong>ℹ Information</strong><br>
+                        This component is responsible for 56.6% of all system calls. Consider profiling for optimization.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="margin-top: 20px;">
+                <button class="button">📊 Generate Report</button>
+                <button class="button">📥 Export Data (CSV)</button>
+                <button class="button">🔔 Set Alert Threshold</button>
+                <button class="button">📈 Compare with Baseline</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="margin-top: 20px; padding: 15px; background: white; border: 2px solid #333;">
+        <strong>Design Notes:</strong>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>Component selector chips allow quick switching between different robot components</li>
+            <li>Statistics grid provides key metrics at a glance</li>
+            <li>Pie chart shows distribution of system call types for this component</li>
+            <li>Timeline chart visualizes activity patterns over time</li>
+            <li>Detailed table breaks down each system call type with actionable details</li>
+            <li>Performance insights section provides AI-generated recommendations</li>
+            <li>Export and comparison features for deeper analysis</li>
+        </ul>
+    </div>
+</body>
+</html>
+

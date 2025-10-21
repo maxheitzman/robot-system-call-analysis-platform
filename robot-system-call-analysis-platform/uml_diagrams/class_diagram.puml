@@ -1,0 +1,487 @@
+@startuml Robot_System_Call_Analysis_Platform_Class_Diagram
+
+!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.4.0
+!include ICONURL/common.puml
+!include ICONURL/font-awesome-5/database.puml
+!include ICONURL/font-awesome-5/server.puml
+!include ICONURL/font-awesome-5/desktop.puml
+
+title UMD Husky Robot System Call Analysis Platform - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor<<Core>> LightBlue
+    BackgroundColor<<Data>> LightGreen
+    BackgroundColor<<Analysis>> LightYellow
+    BackgroundColor<<UI>> LightPink
+    BackgroundColor<<Storage>> Wheat
+}
+
+package "Sensor & Hardware Layer" {
+    class LiDARSensor <<Core>> {
+        - sensorId: String
+        - isActive: boolean
+        - scanFrequency: double
+        - range: double
+        --
+        + startScanning(): void
+        + stopScanning(): void
+        + getPointCloud(): PointCloudData
+        + calibrate(): boolean
+        + getStatus(): SensorStatus
+    }
+
+    class GPSSensor <<Core>> {
+        - sensorId: String
+        - isActive: boolean
+        - accuracy: double
+        - satellites: int
+        --
+        + getPosition(): GPSData
+        + getVelocity(): VelocityData
+        + calibrate(): boolean
+        + getStatus(): SensorStatus
+    }
+
+    class CameraSensor <<Core>> {
+        - sensorId: String
+        - isActive: boolean
+        - resolution: String
+        - frameRate: int
+        --
+        + captureImage(): ImageData
+        + startVideoStream(): void
+        + stopVideoStream(): void
+        + calibrate(): boolean
+        + getStatus(): SensorStatus
+    }
+
+    class IMUSensor <<Core>> {
+        - sensorId: String
+        - isActive: boolean
+        - samplingRate: int
+        - accuracy: double
+        --
+        + getAcceleration(): AccelerationData
+        + getGyroscope(): GyroscopeData
+        + getMagnetometer(): MagnetometerData
+        + calibrate(): boolean
+        + getStatus(): SensorStatus
+    }
+}
+
+package "Data Validation & Security Layer" {
+    class DataIntegrityChecker <<Core>> {
+        - validationRules: List<ValidationRule>
+        - baselineData: Map<String, Object>
+        - anomalyThreshold: double
+        - isEnabled: boolean
+        --
+        + validateSensorData(data: SensorData): ValidationResult
+        + checkDataConsistency(data: List<SensorData>): boolean
+        + detectTampering(data: SensorData): boolean
+        + updateBaseline(data: SensorData): void
+        + generateIntegrityReport(): IntegrityReport
+    }
+
+    class SecurityMonitor <<Core>> {
+        - threatLevel: ThreatLevel
+        - activeThreats: List<Threat>
+        - mitigationActions: List<Action>
+        --
+        + assessThreat(data: SensorData): ThreatAssessment
+        + executeMitigation(threat: Threat): boolean
+        + sendAlert(alert: SecurityAlert): void
+        + stopRobot(): boolean
+        + logSecurityEvent(event: SecurityEvent): void
+    }
+
+    class RobotController <<Core>> {
+        - isOperational: boolean
+        - emergencyStop: boolean
+        - currentMode: OperationMode
+        --
+        + startOperation(): boolean
+        + stopOperation(): boolean
+        + emergencyStop(): void
+        + setOperationMode(mode: OperationMode): void
+        + getStatus(): RobotStatus
+    }
+}
+
+package "Data Collection Layer" {
+    class RobotDataCollector <<Core>> {
+        - robotIP: String
+        - connectionPort: int
+        - isConnected: boolean
+        - collectionMode: String
+        --
+        + connect(): boolean
+        + disconnect(): void
+        + collectRealTimeData(): SystemCallData
+        + collectSensorData(): SensorData
+        + setMode(mode: String): void
+        + getConnectionStatus(): boolean
+    }
+
+    class CSVFileImporter <<Data>> {
+        - filePath: String
+        - fileSize: long
+        - recordCount: int
+        --
+        + importCSV(path: String): DataFrame
+        + validateFormat(): boolean
+        + getFileMetadata(): FileInfo
+        + preprocess(): void
+    }
+
+    class SystemCallData <<Data>> {
+        - timestamp: long
+        - epochTime: double
+        - nodeId: String
+        - processId: int
+        - systemCallName: String
+        - executionTime: double
+        - returnCode: int
+        - arguments: String
+        --
+        + parse(): void
+        + validate(): boolean
+        + serialize(): String
+        + toJSON(): String
+    }
+
+    class SensorData <<Data>> {
+        - timestamp: long
+        - sensorId: String
+        - sensorType: String
+        - rawData: Object
+        - processedData: Object
+        - integrityHash: String
+        --
+        + validate(): boolean
+        + process(): void
+        + serialize(): String
+        + toJSON(): String
+    }
+}
+
+package "Data Processing Layer" {
+    class SystemCallParser <<Core>> {
+        - rawData: List<SystemCallData>
+        - parsedData: DataFrame
+        - errorLog: List<String>
+        --
+        + parseSystemCalls(): DataFrame
+        + filterByNode(nodeId: String): DataFrame
+        + filterByTimeRange(start: long, end: long): DataFrame
+        + aggregateByType(): Map<String, int>
+        + detectErrors(): List<String>
+    }
+
+    class DataProcessor <<Core>> {
+        - dataFrame: DataFrame
+        - processingPipeline: List<ProcessingStep>
+        --
+        + cleanData(): void
+        + normalizeTimestamps(): void
+        + categorizeSystemCalls(): void
+        + computeStatistics(): Statistics
+        + handleMissingData(): void
+    }
+
+    class RobotComponentAnalyzer <<Analysis>> {
+        - componentName: String
+        - systemCallFrequency: Map<String, int>
+        - performanceMetrics: Metrics
+        --
+        + analyzeComponent(nodeId: String): ComponentAnalysis
+        + getSystemCallDistribution(): Map<String, double>
+        + identifyBottlenecks(): List<Bottleneck>
+        + comparePerformance(other: String): ComparisonResult
+    }
+}
+
+package "Analysis & Intelligence Layer" {
+    class PatternRecognizer <<Analysis>> {
+        - trainingData: List<SystemCallData>
+        - model: LSTMModel
+        - patterns: List<Pattern>
+        --
+        + trainModel(data: DataFrame): void
+        + detectPatterns(data: DataFrame): List<Pattern>
+        + identifyAnomalies(data: SystemCallData): boolean
+        + updateModel(newData: DataFrame): void
+    }
+
+    class LSTMModel <<Analysis>> {
+        - inputSize: int
+        - hiddenSize: int
+        - numLayers: int
+        - dropout: double
+        - weights: Matrix
+        --
+        + train(data: DataFrame, epochs: int): void
+        + predict(sequence: List<SystemCallData>): Prediction
+        + evaluate(testData: DataFrame): Metrics
+        + saveModel(path: String): void
+        + loadModel(path: String): void
+    }
+
+    class AnomalyDetector <<Analysis>> {
+        - threshold: double
+        - normalPatterns: List<Pattern>
+        - anomalies: List<Anomaly>
+        --
+        + detectAnomaly(data: SystemCallData): boolean
+        + setThreshold(value: double): void
+        + getAnomalies(): List<Anomaly>
+        + generateAlert(anomaly: Anomaly): Alert
+    }
+
+    class PerformanceAnalyzer <<Analysis>> {
+        - metrics: PerformanceMetrics
+        - benchmarks: Map<String, double>
+        --
+        + analyzePerformance(data: DataFrame): PerformanceReport
+        + identifyBottlenecks(): List<Bottleneck>
+        + compareToBaseline(baseline: Metrics): Comparison
+        + generateRecommendations(): List<String>
+    }
+}
+
+package "Storage Layer" {
+    class DatabaseManager <<Storage>> {
+        - connectionString: String
+        - dbConnection: Connection
+        - isConnected: boolean
+        --
+        + connect(): boolean
+        + disconnect(): void
+        + executeQuery(query: String): ResultSet
+        + insertData(data: List<SystemCallData>): int
+        + updateRecord(id: int, data: SystemCallData): boolean
+        + deleteOldRecords(beforeDate: long): int
+    }
+
+    class SystemCallRepository <<Storage>> {
+        - dbManager: DatabaseManager
+        - cacheManager: CacheManager
+        --
+        + save(data: SystemCallData): int
+        + saveAll(dataList: List<SystemCallData>): int
+        + findById(id: int): SystemCallData
+        + findByTimeRange(start: long, end: long): List<SystemCallData>
+        + findByNode(nodeId: String): List<SystemCallData>
+        + count(): long
+    }
+
+    class CacheManager <<Storage>> {
+        - cacheSize: int
+        - cache: Map<String, Object>
+        - ttl: int
+        --
+        + put(key: String, value: Object): void
+        + get(key: String): Object
+        + invalidate(key: String): void
+        + clear(): void
+        + getStats(): CacheStats
+    }
+}
+
+package "API & Service Layer" {
+    class RESTAPIController <<Core>> {
+        - port: int
+        - routes: Map<String, Handler>
+        - server: HTTPServer
+        --
+        + startServer(): void
+        + stopServer(): void
+        + registerRoute(path: String, handler: Handler): void
+        + handleRequest(request: Request): Response
+        + authenticate(token: String): boolean
+    }
+
+    class DataService <<Core>> {
+        - repository: SystemCallRepository
+        - processor: DataProcessor
+        - analyzer: RobotComponentAnalyzer
+        --
+        + getSystemCalls(filters: Map<String, Object>): List<SystemCallData>
+        + getComponentAnalysis(nodeId: String): ComponentAnalysis
+        + getPerformanceMetrics(): PerformanceMetrics
+        + exportData(format: String): File
+    }
+
+    class AnalysisService <<Analysis>> {
+        - patternRecognizer: PatternRecognizer
+        - anomalyDetector: AnomalyDetector
+        - performanceAnalyzer: PerformanceAnalyzer
+        --
+        + analyzeRealTime(data: SystemCallData): AnalysisResult
+        + detectAnomalies(): List<Anomaly>
+        + generateReport(type: String): Report
+        + getInsights(): List<Insight>
+    }
+}
+
+package "User Interface Layer" {
+    class Dashboard <<UI>> {
+        - currentUser: User
+        - activeView: String
+        - refreshInterval: int
+        --
+        + render(): void
+        + updateView(data: Object): void
+        + handleUserAction(action: String): void
+        + showNotification(message: String): void
+    }
+
+    class VisualizationEngine <<UI>> {
+        - chartLibrary: ChartLib
+        - currentChart: Chart
+        --
+        + createLineChart(data: DataFrame): Chart
+        + createBarChart(data: Map<String, int>): Chart
+        + createHeatmap(data: Matrix): Chart
+        + exportChart(format: String): File
+        + updateChart(newData: Object): void
+    }
+
+    class ReportGenerator <<UI>> {
+        - template: String
+        - reportData: Map<String, Object>
+        --
+        + generatePDF(): File
+        + generateCSV(): File
+        + generateJSON(): String
+        + customizeTemplate(template: String): void
+    }
+}
+
+package "Security & Authentication" {
+    class AuthenticationManager {
+        - userDatabase: Map<String, User>
+        - sessionManager: SessionManager
+        --
+        + login(username: String, password: String): boolean
+        + logout(sessionId: String): void
+        + validateToken(token: String): boolean
+        + changePassword(userId: int, newPassword: String): boolean
+    }
+
+    class User {
+        - userId: int
+        - username: String
+        - email: String
+        - role: String
+        - permissions: List<String>
+        --
+        + hasPermission(permission: String): boolean
+        + getRole(): String
+    }
+}
+
+' Relationships - Sensor & Hardware Layer
+LiDARSensor --> SensorData : generates
+GPSSensor --> SensorData : generates
+CameraSensor --> SensorData : generates
+IMUSensor --> SensorData : generates
+
+' Relationships - Data Validation & Security
+SensorData --> DataIntegrityChecker : validates
+DataIntegrityChecker --> SecurityMonitor : reports violations
+SecurityMonitor --> RobotController : controls operation
+SecurityMonitor --> Dashboard : sends alerts
+RobotController --> LiDARSensor : controls
+RobotController --> GPSSensor : controls
+RobotController --> CameraSensor : controls
+RobotController --> IMUSensor : controls
+
+' Relationships - Data Collection
+RobotDataCollector --> SystemCallData : creates
+RobotDataCollector --> SensorData : collects
+CSVFileImporter --> SystemCallData : creates
+SystemCallParser --> SystemCallData : processes
+
+' Relationships - Processing
+SystemCallParser --> DataProcessor : feeds data
+DataProcessor --> RobotComponentAnalyzer : provides clean data
+RobotComponentAnalyzer --> PerformanceAnalyzer : provides metrics
+
+' Relationships - Analysis
+PatternRecognizer --> LSTMModel : uses
+PatternRecognizer --> AnomalyDetector : feeds patterns
+AnomalyDetector --> PerformanceAnalyzer : reports anomalies
+
+' Relationships - Storage
+DatabaseManager --> SystemCallRepository : manages connection
+SystemCallRepository --> CacheManager : uses
+SystemCallRepository --> SystemCallData : stores/retrieves
+
+' Relationships - API & Services
+RESTAPIController --> DataService : routes requests
+RESTAPIController --> AnalysisService : routes requests
+DataService --> SystemCallRepository : queries
+DataService --> DataProcessor : uses
+AnalysisService --> PatternRecognizer : uses
+AnalysisService --> AnomalyDetector : uses
+AnalysisService --> PerformanceAnalyzer : uses
+
+' Relationships - UI
+Dashboard --> VisualizationEngine : displays
+Dashboard --> RESTAPIController : requests data
+VisualizationEngine --> ReportGenerator : generates reports
+ReportGenerator --> DataService : gets data
+
+' Relationships - Security
+RESTAPIController --> AuthenticationManager : authenticates
+AuthenticationManager --> User : manages
+Dashboard --> User : displays for
+
+note right of DataIntegrityChecker
+  Security Flow:
+  1. Sensors generate data
+  2. DataIntegrityChecker validates
+  3. If tampering detected:
+     - SecurityMonitor assesses threat
+     - RobotController stops robot
+     - Dashboard shows alert to user
+  4. Data + assessment sent to user
+end note
+
+note right of SecurityMonitor
+  Critical Security Functions:
+  - Detects falsified sensor data
+  - Stops robot if threat detected
+  - Sends alerts to user interface
+  - Logs all security events
+  - Prevents robot movement
+end note
+
+note right of LSTMModel
+  Based on the existing LSTM 
+  encoder-decoder model from
+  DoD SAFE dataset
+end note
+
+note right of SystemCallData
+  Represents the 13-column
+  CSV structure:
+  - Epoch Time
+  - Time components
+  - Node, PID
+  - System Call
+  - Execution Time
+  - Return Code
+  - Arguments
+end note
+
+note bottom of PatternRecognizer
+  Implements system call pattern
+  recognition using the trained
+  LSTM model with dropout 0.2
+end note
+
+@enduml
+

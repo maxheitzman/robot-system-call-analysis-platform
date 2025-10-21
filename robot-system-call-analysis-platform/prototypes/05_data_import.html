@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Low-Fidelity Prototype - Data Import</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .prototype-note {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border: 3px solid #333;
+        }
+        .header {
+            background: #e0e0e0;
+            border-bottom: 3px solid #333;
+            padding: 20px;
+        }
+        .main-content {
+            padding: 40px;
+        }
+        .upload-section {
+            border: 3px dashed #333;
+            padding: 60px;
+            text-align: center;
+            background: #f8f8f8;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+        .upload-section:hover {
+            background: #e8e8e8;
+        }
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .button {
+            border: 2px solid #333;
+            padding: 12px 24px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .button.primary {
+            background: #333;
+            color: white;
+        }
+        .file-list {
+            margin-bottom: 30px;
+        }
+        .file-card {
+            border: 3px solid #333;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #f8f8f8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-info {
+            flex: 1;
+        }
+        .file-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .file-meta {
+            font-size: 13px;
+            color: #666;
+        }
+        .progress-bar {
+            height: 30px;
+            border: 2px solid #333;
+            background: white;
+            position: relative;
+            margin-top: 10px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #333;
+            transition: width 0.3s;
+        }
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-box {
+            border: 3px solid #333;
+            padding: 20px;
+            text-align: center;
+            background: #f8f8f8;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #666;
+        }
+        .history-section {
+            border: 3px solid #333;
+            padding: 20px;
+            background: #f8f8f8;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+        }
+        .history-table {
+            width: 100%;
+            background: white;
+            border: 2px solid #333;
+            border-collapse: collapse;
+        }
+        .history-table th {
+            background: #333;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            border: 2px solid #333;
+        }
+        .history-table td {
+            padding: 10px 12px;
+            border: 2px solid #333;
+        }
+        .history-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .status-badge {
+            padding: 5px 10px;
+            border: 2px solid #333;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-badge.processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-note">
+        <strong>📋 Low-Fidelity Prototype - Screen 5 of 5</strong><br>
+        Data import interface for uploading and processing CSV system call data files.
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📥 Data Import & Processing</h1>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            
+            <!-- Upload Section -->
+            <div class="upload-section" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <h2 style="margin-bottom: 10px;">Drop CSV files here or click to browse</h2>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Supported format: System call CSV with 13 columns<br>
+                    Maximum file size: 500 MB
+                </p>
+                <button class="button primary">📂 Browse Files</button>
+            </div>
+
+            <!-- Format Requirements -->
+            <div style="border: 3px solid #333; padding: 20px; margin-bottom: 30px; background: #f8f8f8;">
+                <div class="section-title">📋 CSV Format Requirements</div>
+                <div style="background: white; padding: 15px; border: 2px solid #333;">
+                    <p style="margin-bottom: 10px;"><strong>Required Columns (13 total):</strong></p>
+                    <ol style="margin-left: 20px; line-height: 1.8;">
+                        <li>Epoch Time (double)</li>
+                        <li>Hours (int)</li>
+                        <li>Minutes (int)</li>
+                        <li>Seconds (int)</li>
+                        <li>Milliseconds (int)</li>
+                        <li>Node (string)</li>
+                        <li>PID (int)</li>
+                        <li>System Call (string)</li>
+                        <li>Unfinished Call (string)</li>
+                        <li>Resumed Call (string)</li>
+                        <li>Execution Time (double)</li>
+                        <li>Return Code (int)</li>
+                        <li>Arguments (string)</li>
+                    </ol>
+                    <div style="margin-top: 15px; padding: 10px; background: #d1ecf1; border-left: 4px solid #17a2b8;">
+                        <strong>💡 Tip:</strong> Export your CSV files using the provided syscall_bagreader_script.py for automatic format compliance
+                    </div>
+                </div>
+            </div>
+
+            <!-- Currently Processing -->
+            <div class="file-list">
+                <div class="section-title">⏳ Currently Processing</div>
+                
+                <div class="file-card">
+                    <div class="file-info">
+                        <div class="file-name">test-gps-no-cam.csv</div>
+                        <div class="file-meta">
+                            Size: 95.6 MB | Records: ~632,986 | Started: 2 minutes ago
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 68%;"></div>
+                            <div class="progress-text">68% Complete (430,000 / 632,986 records)</div>
+                        </div>
+                        <div style="margin-top: 10px; font-size: 13px; color: #666;">
+                            Estimated time remaining: 1 minute | Processing rate: 14,063 records/sec
+                        </div>
+                    </div>
+                    <div>
+                        <button class="button">⏸ Pause</button>
+                        <button class="button">✕ Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Import Statistics -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Total Records Imported</div>
+                    <div class="stat-value">430,031</div>
+                    <div class="stat-label">Last 24 hours</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Files Processed</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">This session</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Success Rate</div>
+                    <div class="stat-value">99.97%</div>
+                    <div class="stat-label">Data quality</div>
+                </div>
+            </div>
+
+            <!-- Import History -->
+            <div class="history-section">
+                <div class="section-title">📜 Recent Import History</div>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Size</th>
+                            <th>Records</th>
+                            <th>Date Imported</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>gps-no-cam.csv</strong></td>
+                            <td>52.2 MB</td>
+                            <td>346,466</td>
+                            <td>2025-10-13 09:15</td>
+                            <td>28 sec</td>
+                            <td><span class="status-badge success">✓ SUCCESS</span></td>
+                            <td>
+                                [View] [Export] [Delete]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>man-gps-no-cam.csv</strong></td>
+                            <td>32.5 MB</td>
+                            <td>216,199</td>
+                            <td>2025-10-13 08:42</td>
+                            <td>17 sec</td>
+                            <td><span class="status-badge success">✓ SUCCESS</span></td>
+                            <td>
+                                [View] [Export] [Delete]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>full-cam.csv</strong></td>
+                            <td>23.5 MB</td>
+                            <td>154,618</td>
+                            <td>2025-10-13 08:20</td>
+                            <td>12 sec</td>
+                            <td><span class="status-badge success">✓ SUCCESS</span></td>
+                            <td>
+                                [View] [Export] [Delete]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>auto-gps-no-cam.csv</strong></td>
+                            <td>5.9 MB</td>
+                            <td>40,031</td>
+                            <td>2025-10-13 07:55</td>
+                            <td>3 sec</td>
+                            <td><span class="status-badge success">✓ SUCCESS</span></td>
+                            <td>
+                                [View] [Export] [Delete]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>auto-gps-no-cam-processed.csv</strong></td>
+                            <td>4.7 MB</td>
+                            <td>40,031</td>
+                            <td>2025-10-13 07:30</td>
+                            <td>3 sec</td>
+                            <td><span class="status-badge success">✓ SUCCESS</span></td>
+                            <td>
+                                [View] [Export] [Delete]
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Import Summary -->
+            <div style="margin-top: 30px; border: 3px solid #333; padding: 20px; background: #f8f8f8;">
+                <div class="section-title">📊 Latest Import Summary</div>
+                <div style="background: white; padding: 20px; border: 2px solid #333;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <p><strong>File:</strong> gps-no-cam.csv</p>
+                            <p><strong>Size:</strong> 52.2 MB</p>
+                            <p><strong>Total Records:</strong> 346,466</p>
+                            <p><strong>Success Rate:</strong> 99.98%</p>
+                            <p><strong>Errors:</strong> 63 rows (validation failures)</p>
+                        </div>
+                        <div>
+                            <p><strong>System Call Distribution:</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 5px;">
+                                <li>clock_gettime: 46.0%</li>
+                                <li>futex: 22.2%</li>
+                                <li>write: 8.2%</li>
+                                <li>select: 6.6%</li>
+                                <li>recvfrom: 5.7%</li>
+                                <li>Others: 11.3%</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <p><strong>Top Components:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 5px;">
+                            <li>global_planner: 196,132 calls (56.6%)</li>
+                            <li>front_ouster/ouster_driver: 89,042 calls (25.7%)</li>
+                            <li>front_ouster/os_cloud_node: 38,804 calls (11.2%)</li>
+                            <li>Others: 22,488 calls (6.5%)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="margin-top: 30px; text-align: center;">
+                <button class="button primary">📥 Import Another File</button>
+                <button class="button">📊 View All Data</button>
+                <button class="button">⚙️ Import Settings</button>
+                <button class="button">📖 View Import Log</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="margin-top: 20px; padding: 15px; background: white; border: 2px solid #333;">
+        <strong>Design Notes:</strong>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>Drag-and-drop area provides intuitive file upload interface</li>
+            <li>Clear format requirements prevent import errors</li>
+            <li>Real-time progress bar shows import status and estimated completion</li>
+            <li>Statistics provide overview of import activity and data quality</li>
+            <li>Import history table allows reviewing past imports</li>
+            <li>Detailed summary shows data distribution and validation results</li>
+            <li>Ability to pause/cancel imports and review detailed logs</li>
+        </ul>
+    </div>
+</body>
+</html>
+

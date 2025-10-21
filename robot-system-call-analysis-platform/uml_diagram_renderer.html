@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UML Diagram Renderer - Stage 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .diagram-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .diagram-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .instructions {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+        .link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 URGENT: UML Diagram Renderer</h1>
+        
+        <div class="warning">
+            <strong>⚠️ DUE DATE APPROACHING!</strong><br>
+            Due: October 23, 2025 (Thursday) before 11:59 PM<br>
+            Follow these steps to render all UML diagrams quickly.
+        </div>
+
+        <div class="instructions">
+            <strong>📋 Quick Steps:</strong><br>
+            1. Click "Open PlantUML" button for each diagram<br>
+            2. Copy the code from the code block<br>
+            3. Paste into PlantUML editor<br>
+            4. Click "Submit" to render<br>
+            5. Right-click image → "Save image as..." → Save as PNG<br>
+            6. Repeat for all 5 diagrams
+        </div>
+
+        <!-- Class Diagram -->
+        <div class="diagram-section">
+            <div class="diagram-title">1. Class Diagram (25+ classes)</div>
+            <button class="button" onclick="window.open('http://www.plantuml.com/plantuml/uml/', '_blank')">Open PlantUML</button>
+            <div class="code-block" id="class-diagram-code">Loading...</div>
+        </div>
+
+        <!-- Use Case Diagram -->
+        <div class="diagram-section">
+            <div class="diagram-title">2. Use Case Diagram (29 use cases)</div>
+            <button class="button" onclick="window.open('http://www.plantuml.com/plantuml/uml/', '_blank')">Open PlantUML</button>
+            <div class="code-block" id="usecase-diagram-code">Loading...</div>
+        </div>
+
+        <!-- Sequence Diagram 1 -->
+        <div class="diagram-section">
+            <div class="diagram-title">3. Sequence Diagram 1 - Real-Time Monitoring</div>
+            <button class="button" onclick="window.open('http://www.plantuml.com/plantuml/uml/', '_blank')">Open PlantUML</button>
+            <div class="code-block" id="sequence1-diagram-code">Loading...</div>
+        </div>
+
+        <!-- Sequence Diagram 2 -->
+        <div class="diagram-section">
+            <div class="diagram-title">4. Sequence Diagram 2 - Data Analysis</div>
+            <button class="button" onclick="window.open('http://www.plantuml.com/plantuml/uml/', '_blank')">Open PlantUML</button>
+            <div class="code-block" id="sequence2-diagram-code">Loading...</div>
+        </div>
+
+        <!-- Sequence Diagram 3 -->
+        <div class="diagram-section">
+            <div class="diagram-title">5. Sequence Diagram 3 - Data Import</div>
+            <button class="button" onclick="window.open('http://www.plantuml.com/plantuml/uml/', '_blank')">Open PlantUML</button>
+            <div class="code-block" id="sequence3-diagram-code">Loading...</div>
+        </div>
+
+        <div class="instructions">
+            <strong>💾 Save Images As:</strong><br>
+            - class_diagram.png<br>
+            - use_case_diagram.png<br>
+            - sequence_1_realtime.png<br>
+            - sequence_2_analysis.png<br>
+            - sequence_3_import.png<br><br>
+            
+            <strong>📁 Create folder:</strong> stage2/uml_images/<br>
+            <strong>⏱️ Time needed:</strong> ~15 minutes total
+        </div>
+    </div>
+
+    <script>
+        // This would normally load the actual PlantUML code
+        // For now, showing placeholder text
+        document.getElementById('class-diagram-code').textContent = 'Class diagram code will be loaded here...';
+        document.getElementById('usecase-diagram-code').textContent = 'Use case diagram code will be loaded here...';
+        document.getElementById('sequence1-diagram-code').textContent = 'Sequence diagram 1 code will be loaded here...';
+        document.getElementById('sequence2-diagram-code').textContent = 'Sequence diagram 2 code will be loaded here...';
+        document.getElementById('sequence3-diagram-code').textContent = 'Sequence diagram 3 code will be loaded here...';
+    </script>
+</body>
+</html>
+
+

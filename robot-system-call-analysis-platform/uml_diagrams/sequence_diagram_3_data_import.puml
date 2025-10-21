@@ -1,0 +1,246 @@
+@startuml Sequence_Diagram_3_CSV_Data_Import
+
+title Sequence Diagram 3: CSV Data Import and Processing
+
+actor "System Administrator" as admin
+participant "Dashboard" as dashboard
+participant "RESTAPIController" as api
+participant "DataService" as service
+participant "CSVFileImporter" as importer
+participant "SystemCallParser" as parser
+participant "DataProcessor" as processor
+participant "SystemCallRepository" as repo
+participant "DatabaseManager" as db
+participant "CacheManager" as cache
+
+== File Upload ==
+admin -> dashboard : Navigate to "Import Data"
+activate dashboard
+dashboard --> admin : Display upload interface
+
+admin -> dashboard : Select CSV file\n(test-gps-no-cam.csv, 95.6 MB)
+admin -> dashboard : Click "Upload"
+
+dashboard -> api : POST /api/data/import\n(multipart/form-data)
+activate api
+api -> api : Validate file:\n- Check extension (.csv)\n- Check size (< 500 MB)\n- Verify not empty
+
+alt File Valid
+    api -> service : importCSVFile(file)
+    activate service
+    
+    == File Processing ==
+    service -> importer : importCSV(filePath)
+    activate importer
+    
+    importer -> importer : Open file stream
+    importer -> importer : Read header row
+    importer -> importer : Validate structure:\n✓ 13 columns present\n✓ Required fields exist
+    
+    importer -> importer : Get file metadata:\n- Size: 95.6 MB\n- Estimated records: 632,986
+    
+    importer --> service : FileMetadata
+    service -> api : Update progress: "File validated"
+    api -> dashboard : Progress update (10%)
+    dashboard --> admin : Show progress bar: 10%
+    
+    == Data Parsing ==
+    loop For each batch (10,000 records)
+        importer -> importer : Read batch from CSV
+        importer -> parser : parseSystemCalls(batch)
+        activate parser
+        
+        parser -> parser : For each row:
+        note right
+          Parse columns:
+          1. Epoch Time → double
+          2. Hours → int
+          3. Minutes → int
+          4. Seconds → int
+          5. Milliseconds → int
+          6. Node → String
+          7. PID → int
+          8. System Call → String
+          9-10. Unfinished/Resumed → String
+          11. Execution Time → double
+          12. Return Code → int
+          13. Arguments → String
+        end note
+        
+        parser -> parser : Create SystemCallData objects
+        parser -> parser : Validate data:\n- Required fields not null\n- Timestamps valid\n- Numeric fields in range
+        
+        alt Data Valid
+            parser --> importer : List<SystemCallData>
+            
+            == Data Processing ==
+            importer -> processor : cleanData(parsedData)
+            activate processor
+            
+            processor -> processor : Remove duplicates
+            processor -> processor : Handle missing values
+            processor -> processor : Normalize timestamps
+            processor -> processor : Categorize calls:
+            note right
+              - clock_gettime
+              - futex
+              - write
+              - read
+              - select
+              - recvfrom
+              - brk
+              - clock_nanosleep
+              - others
+            end note
+            
+            processor --> importer : ProcessedData
+            deactivate processor
+            
+            == Data Storage ==
+            importer -> repo : saveAll(processedData)
+            activate repo
+            
+            repo -> db : BEGIN TRANSACTION
+            activate db
+            
+            loop For each SystemCallData
+                db -> db : INSERT INTO system_calls\n(timestamp, node, pid,\nsyscall, exec_time, ...)
+            end
+            
+            db -> db : COMMIT
+            db --> repo : Rows inserted: 10,000
+            deactivate db
+            
+            repo -> cache : invalidate("system_calls_*")
+            activate cache
+            cache -> cache : Clear related cache entries
+            cache --> repo : Cache cleared
+            deactivate cache
+            
+            repo --> importer : Insert successful
+            deactivate repo
+            
+            importer -> service : Progress update
+            service -> api : Batch complete (10,000 records)
+            api -> dashboard : Progress update
+            dashboard --> admin : Update progress bar
+            
+        else Data Invalid
+            parser --> importer : ValidationError
+            importer -> importer : Log error
+            importer -> importer : Add to error report
+        end
+        
+        deactivate parser
+    end
+    
+    importer -> importer : Close file stream
+    importer -> importer : Generate import summary:
+    note right
+      Summary:
+      - Total records: 632,986
+      - Successfully imported: 632,850
+      - Errors: 136
+      - Duration: 45 seconds
+      - Rate: 14,063 records/sec
+    end note
+    
+    importer --> service : ImportResult
+    deactivate importer
+    
+    service --> api : Import complete
+    deactivate service
+    
+    api --> dashboard : Success response + summary
+    deactivate api
+    
+    dashboard --> admin : Display success message:\n"✓ Import complete!\n632,850 records imported"
+    
+else File Invalid
+    api --> dashboard : Error response
+    deactivate api
+    dashboard --> admin : Display error:\n"Invalid file format"
+end
+
+== Post-Import Analysis ==
+admin -> dashboard : Click "View Import Summary"
+dashboard -> api : GET /api/data/import/last-summary
+activate api
+api -> service : getLastImportSummary()
+activate service
+service -> repo : getImportStats()
+activate repo
+repo -> db : Query import metadata
+activate db
+db --> repo : ImportMetadata
+deactivate db
+repo --> service : ImportStatistics
+deactivate repo
+service --> api : SummaryReport
+deactivate service
+api --> dashboard : JSON response
+deactivate api
+
+dashboard -> dashboard : Display summary:
+note right
+  File: test-gps-no-cam.csv
+  Size: 95.6 MB
+  Records: 632,986
+  Success rate: 99.98%
+  Duration: 45 seconds
+  
+  System Call Distribution:
+  - clock_gettime: 46.0%
+  - futex: 22.2%
+  - write: 8.2%
+  - select: 6.6%
+  - others: 17.0%
+  
+  Top Components:
+  - global_planner: 56.6%
+  - front_ouster: 25.7%
+  - os_cloud_node: 11.2%
+end note
+
+dashboard --> admin : Show detailed summary
+
+deactivate dashboard
+
+note right of importer
+  Supported CSV files:
+  - auto-gps-no-cam.csv (5.9 MB)
+  - full-cam.csv (23.5 MB)
+  - man-gps-no-cam.csv (32.5 MB)
+  - gps-no-cam.csv (52.2 MB)
+  - test-gps-no-cam.csv (95.6 MB)
+  
+  Total: ~210 MB raw data
+end note
+
+note right of processor
+  Data cleaning operations:
+  1. Remove duplicate timestamps
+  2. Fill missing PIDs with -1
+  3. Convert relative timestamps
+  4. Standardize node names
+  5. Categorize system calls
+  6. Validate execution times
+end note
+
+note right of db
+  Database schema:
+  
+  Table: system_calls
+  - id (PRIMARY KEY)
+  - timestamp (INDEXED)
+  - node_id (INDEXED)
+  - pid
+  - syscall_type (INDEXED)
+  - execution_time
+  - return_code
+  - arguments (TEXT)
+  - created_at
+end note
+
+@enduml
+

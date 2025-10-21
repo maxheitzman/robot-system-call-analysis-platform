@@ -1,0 +1,154 @@
+@startuml Sequence_Diagram_1_Real_Time_Monitoring
+
+title Sequence Diagram 1: Real-Time System Call Monitoring
+
+actor "System Administrator" as admin
+participant "Dashboard" as dashboard
+participant "RESTAPIController" as api
+participant "DataService" as service
+participant "RobotDataCollector" as collector
+participant "SystemCallParser" as parser
+participant "DatabaseManager" as db
+participant "AnomalyDetector" as detector
+participant "VisualizationEngine" as viz
+participant "Robot System" as robot
+
+== Initialization ==
+admin -> dashboard : Open monitoring dashboard
+activate dashboard
+dashboard -> api : GET /api/connect
+activate api
+api -> service : initiateConnection()
+activate service
+service -> collector : connect()
+activate collector
+collector -> robot : Establish TCP connection
+activate robot
+robot --> collector : Connection established
+collector --> service : Connection successful
+deactivate collector
+service --> api : Status: Connected
+deactivate service
+api --> dashboard : Connection status
+deactivate api
+dashboard --> admin : Display "Connected to Robot"
+
+== Real-Time Data Collection ==
+loop Every 100ms (10 Hz)
+    robot -> collector : Stream system call data
+    activate collector
+    collector -> parser : parseSystemCalls(rawData)
+    activate parser
+    parser -> parser : Validate and format data
+    parser --> collector : SystemCallData[]
+    deactivate parser
+    
+    collector -> service : processRealTimeData(data)
+    activate service
+    
+    ' Store data
+    service -> db : insertData(data)
+    activate db
+    db --> service : Confirmation
+    deactivate db
+    
+    ' Check for anomalies
+    service -> detector : detectAnomaly(data)
+    activate detector
+    detector -> detector : Compare with\nnormal patterns
+    
+    alt Anomaly Detected
+        detector --> service : Anomaly found
+        deactivate detector
+        service -> api : sendAlert(anomaly)
+        activate api
+        api -> dashboard : Push notification
+        dashboard -> dashboard : Show alert banner
+        dashboard --> admin : Display "⚠️ Anomaly Detected!"
+        deactivate api
+    else Normal Behavior
+        detector --> service : Normal
+        deactivate detector
+    end
+    
+    service --> collector : Processing complete
+    deactivate service
+    deactivate collector
+end
+
+== Dashboard Update ==
+admin -> dashboard : Request refresh
+dashboard -> api : GET /api/system-calls/recent
+activate api
+api -> service : getRecentSystemCalls(limit: 100)
+activate service
+service -> db : query("SELECT * FROM system_calls ORDER BY timestamp DESC LIMIT 100")
+activate db
+db --> service : ResultSet
+deactivate db
+service --> api : SystemCallData[]
+deactivate service
+api --> dashboard : JSON response
+deactivate api
+
+dashboard -> viz : createVisualization(data)
+activate viz
+viz -> viz : Generate charts:\n- Call frequency graph\n- Component distribution\n- System call types
+viz --> dashboard : Chart objects
+deactivate viz
+
+dashboard --> admin : Display updated dashboard
+
+== User Interaction ==
+admin -> dashboard : Click "View Details" for global_planner
+dashboard -> api : GET /api/components/global_planner/analysis
+activate api
+api -> service : getComponentAnalysis("global_planner")
+activate service
+service -> db : queryComponentData("global_planner")
+activate db
+db --> service : Component data (22,672 calls)
+deactivate db
+service -> service : Calculate:\n- Call frequency\n- System call distribution\n- Performance metrics
+service --> api : ComponentAnalysis
+deactivate service
+api --> dashboard : JSON response
+deactivate api
+
+dashboard -> viz : renderComponentView(analysis)
+activate viz
+viz --> dashboard : Detailed component view
+deactivate viz
+dashboard --> admin : Show component analysis
+
+deactivate dashboard
+
+note right of robot
+  Robot generates system calls
+  at ~11,200 calls/second
+  
+  Main components:
+  - global_planner (56.6%)
+  - front_ouster (25.7%)
+  - os_cloud_node (11.2%)
+end note
+
+note right of detector
+  Anomaly detection using:
+  - LSTM pattern recognition
+  - Threshold-based alerts
+  - Historical baseline comparison
+end note
+
+note right of db
+  Stores:
+  - Timestamp
+  - Node ID
+  - System call type
+  - Execution time
+  - Return code
+  - Arguments
+end note
+
+@enduml
+

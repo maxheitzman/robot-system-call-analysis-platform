@@ -1,0 +1,190 @@
+@startuml Sequence_Diagram_2_Historical_Data_Analysis
+
+title Sequence Diagram 2: Historical Data Analysis and Pattern Recognition
+
+actor "Data Analyst" as analyst
+participant "Dashboard" as dashboard
+participant "RESTAPIController" as api
+participant "AnalysisService" as analysis
+participant "PatternRecognizer" as recognizer
+participant "LSTMModel" as lstm
+participant "SystemCallRepository" as repo
+participant "DataProcessor" as processor
+participant "ReportGenerator" as report
+participant "VisualizationEngine" as viz
+
+== Analysis Request ==
+analyst -> dashboard : Select "Historical Analysis"
+activate dashboard
+dashboard -> dashboard : Show analysis form:\n- Date range\n- Robot components\n- Analysis type
+
+analyst -> dashboard : Submit analysis request\n(Date: Aug 1-5, 2024)\n(Component: global_planner)
+dashboard -> api : POST /api/analysis/historical
+activate api
+api -> analysis : analyzeHistoricalData(params)
+activate analysis
+
+== Data Retrieval ==
+analysis -> repo : findByTimeRangeAndNode(\nstart: 1722470400,\nend: 1722902400,\nnode: "global_planner")
+activate repo
+repo -> repo : Execute database query
+repo --> analysis : List<SystemCallData>\n(22,672 records)
+deactivate repo
+
+== Data Processing ==
+analysis -> processor : cleanData(rawData)
+activate processor
+processor -> processor : Remove duplicates
+processor -> processor : Handle missing values
+processor -> processor : Normalize timestamps
+processor -> processor : Categorize system calls
+processor --> analysis : CleanedDataFrame
+deactivate processor
+
+== Pattern Recognition ==
+analysis -> recognizer : detectPatterns(cleanedData)
+activate recognizer
+recognizer -> recognizer : Prepare sequence data
+recognizer -> lstm : predict(sequences)
+activate lstm
+lstm -> lstm : Forward pass through\nencoder-decoder network\n(dropout: 0.2)
+lstm -> lstm : Generate predictions
+lstm --> recognizer : PredictionResults
+deactivate lstm
+
+recognizer -> recognizer : Identify patterns:\n- clock_gettime (46%)\n- futex (22%)\n- write/read/select (20%)
+recognizer -> recognizer : Detect anomalies
+recognizer --> analysis : PatternAnalysisResult
+deactivate recognizer
+
+== Statistical Analysis ==
+analysis -> processor : computeStatistics(cleanedData)
+activate processor
+processor -> processor : Calculate:\n- Mean execution time: 86μs\n- Call frequency: 11,200/sec\n- Distribution by type\n- Component interactions
+processor --> analysis : StatisticsReport
+deactivate processor
+
+analysis --> api : AnalysisResult
+deactivate analysis
+api --> dashboard : JSON response
+deactivate api
+
+== Visualization ==
+dashboard -> viz : createAnalysisVisualization(result)
+activate viz
+viz -> viz : Generate charts:
+note right
+  1. Time series: call frequency
+  2. Pie chart: system call distribution
+  3. Bar chart: component comparison
+  4. Heatmap: temporal patterns
+  5. Box plot: execution time distribution
+end note
+viz --> dashboard : ChartCollection
+deactivate viz
+
+dashboard --> analyst : Display analysis results
+
+== Report Generation ==
+analyst -> dashboard : Click "Generate Report"
+dashboard -> api : POST /api/reports/generate
+activate api
+api -> report : generatePDFReport(analysisResult)
+activate report
+
+report -> report : Create report sections:
+note right
+  1. Executive Summary
+  2. Data Overview
+  3. Pattern Analysis
+  4. Statistical Findings
+  5. Anomaly Detection Results
+  6. Performance Metrics
+  7. Recommendations
+end note
+
+report -> viz : exportChartsForReport()
+activate viz
+viz --> report : Chart images (PNG)
+deactivate viz
+
+report -> report : Compile PDF document
+report --> api : PDF file (2.3 MB)
+deactivate report
+api --> dashboard : Download link
+deactivate api
+dashboard --> analyst : Download report
+
+== Comparative Analysis ==
+analyst -> dashboard : Select "Compare Modes"
+dashboard -> dashboard : Show comparison form
+
+analyst -> dashboard : Compare:\n- Autonomous mode\n- Manual mode
+dashboard -> api : POST /api/analysis/compare
+activate api
+api -> analysis : compareOperationalModes(\n["autonomous", "manual"])
+activate analysis
+
+par Parallel Data Retrieval
+    analysis -> repo : findByMode("autonomous")
+    activate repo
+    repo --> analysis : AutonomousData\n(346,466 records)
+    deactivate repo
+else
+    analysis -> repo : findByMode("manual")
+    activate repo
+    repo --> analysis : ManualData\n(216,199 records)
+    deactivate repo
+end
+
+analysis -> processor : compareDatasets(auto, manual)
+activate processor
+processor -> processor : Calculate differences:
+note right
+  Autonomous mode:
+  - More global_planner calls
+  - Higher planning frequency
+  - 11,200 calls/sec
+  
+  Manual mode:
+  - Reduced planning
+  - More I/O operations
+  - 12,700 calls/sec
+end note
+processor --> analysis : ComparisonResult
+deactivate processor
+
+analysis --> api : ComparisonReport
+deactivate analysis
+api --> dashboard : JSON response
+deactivate api
+
+dashboard -> viz : createComparisonView(comparison)
+activate viz
+viz -> viz : Create side-by-side charts
+viz --> dashboard : ComparisonVisualization
+deactivate viz
+
+dashboard --> analyst : Display mode comparison
+
+deactivate dashboard
+
+note right of lstm
+  LSTM Model Specifications:
+  - Input size: variable sequence length
+  - Hidden size: 128 neurons
+  - Num layers: 2
+  - Dropout: 0.2
+  - Training: DoD SAFE dataset
+end note
+
+note right of recognizer
+  Pattern Recognition:
+  - Identifies normal behavior
+  - Detects deviations
+  - Learns temporal patterns
+  - Adapts to new data
+end note
+
+@enduml
+

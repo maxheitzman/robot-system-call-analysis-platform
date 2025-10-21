@@ -1,0 +1,205 @@
+@startuml Robot_System_Call_Analysis_Platform_Use_Case_Diagram
+
+title UMD Husky Robot System Call Analysis Platform - Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor "System Administrator" as admin
+actor "Data Analyst" as analyst
+actor "Research Scientist" as scientist
+actor "System Engineer" as engineer
+actor "Security Analyst" as security
+actor "Robot System" as robot
+
+rectangle "Robot System Call Analysis Platform" {
+    
+    ' Real-time Monitoring Use Cases
+    package "Real-time Monitoring" {
+        usecase "Monitor Real-time\nSystem Calls" as UC1
+        usecase "View Live\nDashboard" as UC2
+        usecase "Receive\nAlerts" as UC3
+        usecase "Track Robot\nComponents" as UC4
+    }
+    
+    ' Data Analysis Use Cases
+    package "Data Analysis" {
+        usecase "Analyze Historical\nData" as UC5
+        usecase "Generate\nStatistics" as UC6
+        usecase "Identify\nPatterns" as UC7
+        usecase "Compare\nOperational Modes" as UC8
+        usecase "Analyze Component\nBehavior" as UC9
+    }
+    
+    ' Anomaly Detection Use Cases
+    package "Anomaly Detection" {
+        usecase "Detect\nAnomalies" as UC10
+        usecase "Identify Cyber\nThreats" as UC11
+        usecase "Validate\nBehavior Patterns" as UC12
+        usecase "Configure\nThresholds" as UC13
+    }
+    
+    ' Security & Data Validation Use Cases
+    package "Security & Data Validation" {
+        usecase "Validate Sensor\nData Integrity" as UC30
+        usecase "Detect Data\nTampering" as UC31
+        usecase "Emergency Stop\nRobot" as UC32
+        usecase "Monitor Sensor\nStatus" as UC33
+        usecase "Generate Security\nReport" as UC34
+        usecase "Manual Override\nSafety" as UC35
+        usecase "Configure Security\nThresholds" as UC36
+    }
+    
+    ' Performance Optimization Use Cases
+    package "Performance Optimization" {
+        usecase "Analyze\nPerformance Metrics" as UC14
+        usecase "Identify\nBottlenecks" as UC15
+        usecase "Generate\nRecommendations" as UC16
+        usecase "Compare\nBaselines" as UC17
+    }
+    
+    ' Reporting Use Cases
+    package "Reporting & Export" {
+        usecase "Generate\nReports" as UC18
+        usecase "Export Data\n(CSV/JSON/PDF)" as UC19
+        usecase "Schedule\nReports" as UC20
+        usecase "Create Custom\nVisualizations" as UC21
+    }
+    
+    ' System Configuration Use Cases
+    package "System Configuration" {
+        usecase "Configure\nSystem Settings" as UC22
+        usecase "Manage\nUser Accounts" as UC23
+        usecase "Set Up Data\nCollection" as UC24
+        usecase "Configure\nStorage" as UC25
+    }
+    
+    ' Data Collection Use Cases
+    package "Data Collection" {
+        usecase "Collect System\nCall Data" as UC26
+        usecase "Import CSV\nFiles" as UC27
+        usecase "Process Robot\nStreams" as UC28
+        usecase "Validate\nData Quality" as UC29
+    }
+}
+
+' Administrator relationships
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC22
+admin --> UC23
+admin --> UC24
+admin --> UC25
+
+' Data Analyst relationships
+analyst --> UC5
+analyst --> UC6
+analyst --> UC7
+analyst --> UC8
+analyst --> UC9
+analyst --> UC18
+analyst --> UC19
+analyst --> UC21
+
+' Research Scientist relationships
+scientist --> UC5
+scientist --> UC7
+scientist --> UC8
+scientist --> UC9
+scientist --> UC17
+scientist --> UC18
+
+' System Engineer relationships
+engineer --> UC14
+engineer --> UC15
+engineer --> UC16
+engineer --> UC17
+engineer --> UC4
+
+' Security Analyst relationships
+security --> UC10
+security --> UC11
+security --> UC12
+security --> UC13
+security --> UC3
+security --> UC30
+security --> UC31
+security --> UC32
+security --> UC33
+security --> UC34
+security --> UC35
+security --> UC36
+
+' Robot System relationships
+robot --> UC26
+robot --> UC28
+
+' Include relationships (required sub-use cases)
+UC1 ..> UC26 : <<include>>
+UC2 ..> UC21 : <<include>>
+UC5 ..> UC6 : <<include>>
+UC7 ..> UC10 : <<include>>
+UC18 ..> UC19 : <<include>>
+UC14 ..> UC15 : <<include>>
+
+' Extend relationships (optional extensions)
+UC10 ..> UC11 : <<extend>>
+UC10 ..> UC3 : <<extend>>
+UC7 ..> UC12 : <<extend>>
+UC15 ..> UC16 : <<extend>>
+UC18 ..> UC20 : <<extend>>
+
+' Generalization relationships (inheritance)
+UC27 --|> UC26
+UC28 --|> UC26
+
+note right of UC1
+  Monitors system calls from
+  the robot in real-time with
+  11,200+ calls/second throughput
+end note
+
+note right of UC7
+  Uses LSTM encoder-decoder
+  model to identify patterns in
+  system call sequences
+end note
+
+note right of UC10
+  Detects anomalies using
+  trained patterns and
+  configurable thresholds
+end note
+
+note right of UC30
+  Validates sensor data integrity
+  before it reaches main control
+  board. Checks for tampering
+  and falsified data.
+end note
+
+note right of UC32
+  Emergency stop capability
+  triggered when data tampering
+  is detected. Prevents robot
+  from making any movements.
+end note
+
+note bottom of UC26
+  Collects data from UMD Husky
+  robot components:
+  - global_planner (56.6%)
+  - front_ouster (25.7%)
+  - os_cloud_node (11.2%)
+  - Other components (6.5%)
+end note
+
+note right of UC19
+  Supports multiple export
+  formats for 1.4GB+ datasets
+  with 1.2M+ system calls
+end note
+
+@enduml
+
