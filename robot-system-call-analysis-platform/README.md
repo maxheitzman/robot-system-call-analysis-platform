@@ -1,366 +1,123 @@
-# Stage 2: Software Design Specification (SDS)
-## Robot System Call Analysis Platform
-
-## ✅ STAGE 2 COMPLETE - ALL DELIVERABLES READY!
-
-**Due Date:** October 23, 2025 (Thursday) before 11:59 PM  
-**Team:** John Heitzman (PM), Noah Küng (Dev), Joseph Musangu (Data), Omotoyosi Adams (UI/UX), Delphin Iradukunda (Docs)
-
----
-
-## 📁 What's in This Folder
-
-### 📄 Main Deliverables
-
-1. **PROJECT_REPORT.md** ⭐ **MAIN SUBMISSION**
-   - Complete Stage 2 report (70+ pages)
-   - Includes ALL requirements:
-     - ✅ Project description (Section 1)
-     - ✅ UML diagrams (Section 2)
-       - Class diagram
-       - Use case diagram
-       - 3 Sequence diagrams
-     - ✅ Low-fidelity prototypes (Section 3)
-     - ✅ Implementation plan (Section 4)
-   - Ready to convert to PDF and submit!
-
-2. **PRESENTATION_OUTLINE.md**
-   - Complete 22-slide presentation structure
-   - Speaker notes for each slide
-   - Timing guide (10-15 minutes)
-   - Q&A preparation
-   - Presentation tips and likely questions
-
-### 📚 Supporting Documents
-
-3. **BEGINNER_GUIDE.md**
-   - Explains everything in simple terms
-   - "What are we building?" explained
-   - "What is a system call?" explained
-   - Perfect for understanding the project from scratch
-
-4. **IMPLEMENTATION_PLAN.md**
-   - Detailed technical plan
-   - 12-week development timeline
-   - Technology stack justification
-   - Team roles and responsibilities
-   - Risk management
-   - Budget estimates
-
-### 🖼️ Visual Assets
-
-5. **uml_diagrams/** folder
-   - `class_diagram.puml` - Complete system architecture (25+ classes)
-   - `use_case_diagram.puml` - 29 use cases, 5 actors
-   - `sequence_diagram_1_realtime_monitoring.puml` - Real-time flow
-   - `sequence_diagram_2_data_analysis.puml` - LSTM analysis flow
-   - `sequence_diagram_3_data_import.puml` - CSV import flow
-   - `README.md` - Instructions to render diagrams
-
-6. **prototypes/** folder
-   - `01_main_dashboard.html` - Main overview screen
-   - `02_realtime_monitor.html` - Live monitoring view
-   - `03_component_analysis.html` - Component deep-dive
-   - `04_anomaly_detection.html` - LSTM anomaly dashboard
-   - `05_data_import.html` - CSV import interface
-   - `README.md` - How to view and use prototypes
-
-### 📋 Reference Materials
-
-7. **SRS_Template.md**
-   - Software Requirements Specification from Stage 1
-   - Based on DoD SAFE dataset requirements
-
-8. **stage2.pdf**
-   - Original assignment requirements
-
----
-
-## 🚀 Quick Start Guide
-
-### For Submission (John/Team Lead):
-
-1. **Convert Report to PDF:**
-   ```bash
-   # Option 1: Use Markdown to PDF converter
-   # (in VS Code: Cmd+Shift+P > "Markdown PDF: Export")
-   
-   # Option 2: Render in browser and print to PDF
-   # Open PROJECT_REPORT.md in VS Code preview
-   # Right-click > Print > Save as PDF
-   
-   # Option 3: Use pandoc
-   pandoc PROJECT_REPORT.md -o stage2_RobotAnalysis.pdf
-   ```
-
-2. **Render UML Diagrams:**
-   - Go to http://www.plantuml.com/plantuml/uml/
-   - Copy contents of each `.puml` file
-   - Export as PNG (high resolution)
-   - Insert into presentation slides or Word doc
-
-3. **Create Presentation Slides:**
-   - Use PRESENTATION_OUTLINE.md as your guide
-   - Create slides in PowerPoint/Google Slides/Keynote
-   - Include UML diagram images
-   - Include prototype screenshots
-   - Follow the timing guide (10-15 minutes)
-
-### For Presentation Prep:
-
-1. **View Prototypes:**
-   - Open any HTML file in `prototypes/` folder
-   - Double-click or drag to browser
-   - Walk through user flows
-
-2. **Practice Presentation:**
-   - Follow PRESENTATION_OUTLINE.md structure
-   - Time yourselves (aim for 12-13 minutes)
-   - Prepare for Q&A (common questions included)
-
-3. **Take Screenshots:**
-   - Capture each prototype screen
-   - Add to presentation slides
-   - Annotate with key features
-
----
-
-## 📊 What We Built
-
-### The System: Robot System Call Analysis Platform
-
-**In Simple Terms:**
-A monitoring system that watches what an autonomous robot is doing "under the hood" and detects problems automatically using AI.
-
-**Key Features:**
-- 🤖 Monitors 11,200+ system calls per second
-- 🧠 Uses LSTM neural network (94% accuracy)
-- 📊 Real-time dashboard with live updates
-- 🚨 Automatic anomaly detection
-- 📈 Historical analysis and reporting
-- 📥 Imports 1.2M+ records from CSV files
-
-**Dataset:**
-- DoD SAFE military robot data
-- 1.4GB, 1.2M+ system calls
-- UMD Husky autonomous robot
-
----
-
-## 🎯 Deliverables Checklist
-
-### Required by Assignment ✅
-
-- [x] **Project description** (1 paragraph)
-  - Location: PROJECT_REPORT.md, Section 1.1-1.3
-
-- [x] **System analysis and decomposition**
-  - [x] Class diagram - 25+ classes in 7 packages
-  - [x] Use case diagram - 29 use cases, 5 actors  
-  - [x] Sequence diagrams - 3 detailed scenarios
-
-- [x] **Low-fidelity prototype**
-  - [x] 5 complete HTML wireframes
-  - [x] Main dashboard
-  - [x] Real-time monitor
-  - [x] Component analysis
-  - [x] Anomaly detection
-  - [x] Data import
-
-- [x] **Implementation plan** (multiple pages!)
-  - [x] Testbed (hardware/software environment)
-  - [x] Programming languages (Python, JavaScript/React)
-  - [x] Development tools (VS Code, Git, Docker, etc.)
-  - [x] Timeline (12-week detailed schedule)
-
-- [x] **Presentation** (10-15 minutes)
-  - [x] Outline complete with speaker notes
-  - [x] Timing guide
-  - [x] Q&A preparation
-
-### Bonus Materials 🎁
-
-- [x] Beginner-friendly explanation guide
-- [x] Detailed implementation plan (40+ pages)
-- [x] Risk management strategy
-- [x] Testing strategy
-- [x] Deployment guide
-- [x] Team roles and responsibilities
-
----
-
-## 📖 How to Use These Materials
-
-### For the Report:
-
-**Main document:** `PROJECT_REPORT.md`
-
-This is your complete Stage 2 submission. It includes:
-- Cover page with team info
-- Table of contents
-- All required sections
-- Appendices with glossary and references
-
-**What to do:**
-1. Review for any customizations (team member info is already filled in!)
-2. Convert to PDF (see instructions above)
-3. Name as: `stage2_[YourGroupName].pdf`
-4. Submit via Blackboard
-
-### For the Presentation:
-
-**Main guide:** `PRESENTATION_OUTLINE.md`
-
-This gives you:
-- 22 slide templates with content
-- Speaker notes for each slide
-- Timing suggestions
-- Transition phrases
-- Q&A preparation
-
-**What to do:**
-1. Create slides in your preferred tool
-2. Use the outline as your script
-3. Insert UML diagrams and prototype screenshots
-4. Practice together as a team
-5. Time yourselves (aim for 12-13 minutes)
-
-### For Understanding the Project:
-
-**Start here:** `BEGINNER_GUIDE.md`
-
-Perfect if you need to:
-- Explain the project to someone
-- Understand what system calls are
-- Refresh your memory on concepts
-- Answer "why are we building this?"
-
----
-
-## 🎓 Project Data
-
-This project uses the **DoD SAFE dataset** located at:
-`../DoD SAFE-IRdf4AjAzcCACu3m/`
-
-### Key Resources
-- **LSTM Model Documentation**: `../DoD SAFE-IRdf4AjAzcCACu3m/DoD SAFE-TRdYakPxRdrWZUHz/NSSSIP 2024 - System Call Pattern Recognition Model Documentation, Schweers.pdf`
-- **CSV Data**: `../DoD SAFE-IRdf4AjAzcCACu3m/DoD SAFE-TRdYakPxRdrWZUHz/csvs_dev_test_bags/`
-- **LSTM Model Code**: `../DoD SAFE-IRdf4AjAzcCACu3m/DoD SAFE-TRdYakPxRdrWZUHz/lstm_model/`
-- **Requirements**: `../DoD SAFE-IRdf4AjAzcCACu3m/DoD SAFE-TRdYakPxRdrWZUHz/srs_requirements.txt`
-
----
-
-## 🎯 Grading Criteria
-
-From the assignment:
-- ✅ **Clarity of UML diagrams** - We have detailed, well-documented diagrams
-- ✅ **Clarity of low-fidelity prototype** - 5 interactive HTML mockups with design notes
-- ✅ **Quality of project report** - Comprehensive 70+ page report
-- ✅ **Quality of presentation** - Complete outline with speaker notes
-
-**Total Score:** 30% of final grade
-
----
-
-## ✨ What Makes This Submission Strong
-
-1. **Comprehensive Coverage**
-   - Goes beyond minimum requirements
-   - Multiple sequence diagrams (3) when 1+ required
-   - Multiple prototypes (5) showing complete system
-   - Detailed implementation plan (40+ pages)
-
-2. **Real-World Application**
-   - Uses actual DoD military research data
-   - Addresses real security and performance problems
-   - Production-ready architecture
-
-3. **Clear Documentation**
-   - Beginner-friendly guide for accessibility
-   - Professional report structure
-   - Step-by-step presentation outline
-   - Code-level detail in diagrams
-
-4. **Technical Depth**
-   - 25+ classes in class diagram
-   - 29 use cases across 5 user types
-   - LSTM neural network integration
-   - 12-week implementation timeline with milestones
-
-5. **Team Collaboration**
-   - Clear role assignments
-   - Realistic timeline
-   - Risk management included
-   - Testing strategy defined
-
----
-
-## 🔍 Need Help?
-
-### Understanding the Project?
-→ Read `BEGINNER_GUIDE.md`
-
-### Rendering UML Diagrams?
-→ See `uml_diagrams/README.md`
-
-### Viewing Prototypes?
-→ See `prototypes/README.md`
-
-### Creating Presentation?
-→ Follow `PRESENTATION_OUTLINE.md`
-
-### Technical Details?
-→ Read `IMPLEMENTATION_PLAN.md`
-
-### Everything in One Place?
-→ Read `PROJECT_REPORT.md`
-
----
-
-## 🚀 Next Steps (After Stage 2)
-
-1. **Immediate** (Before Oct 23):
-   - ✅ Review PROJECT_REPORT.md
-   - ⏳ Convert to PDF
-   - ⏳ Create presentation slides
-   - ⏳ Practice presentation
-   - ⏳ Submit on Blackboard
-
-2. **After Submission**:
-   - Present in class (date TBD)
-   - Receive feedback
-   - Begin Stage 3 (Implementation!)
-
-3. **Stage 3 Preview** (Weeks 1-12):
-   - Set up development environment
-   - Build backend (Python/Flask)
-   - Build frontend (React)
-   - Integrate LSTM model
-   - Deploy to production
-   - See IMPLEMENTATION_PLAN.md for complete timeline
-
----
+# Robot System Call Analysis Platform
+
+**Course:** CS 4366 - Senior Capstone Project Fall 2025  
+**Stage:** 2 - Software Design Specification (SDS)  
+**Team:** John Heitzman, Noah Küng, Joseph Musangu, Omotoyosi Adams, Delphin Iradukunda
+
+## 🎯 Project Overview
+
+The Robot System Call Analysis Platform is an intelligent software system designed to monitor, analyze, and detect anomalies in system call patterns from autonomous robotic systems. Built upon the Department of Defense SAFE dataset, this platform provides real-time monitoring, historical analysis, and machine learning-powered threat detection for the UMD Husky autonomous ground robot.
+
+## 🔑 Key Features
+
+- **Real-time Monitoring:** 11,200+ system calls per second
+- **LSTM Anomaly Detection:** 94% accuracy using neural networks
+- **Sensor Data Validation:** Security validation between sensors and control
+- **Emergency Stop System:** Automatic robot shutdown on threat detection
+- **Multi-user Dashboard:** Role-based access for different user types
+- **Historical Analysis:** Comparative analysis across operational modes
+
+## 📊 Dataset
+
+- **Source:** DoD SAFE (Department of Defense System Analysis for Enhanced Security)
+- **Robot:** UMD Husky autonomous ground robot
+- **Volume:** 1.4GB, 1.2M+ system calls
+- **Time Period:** June-August 2024
+- **Components:** global_planner (56.6%), front_ouster (25.7%), os_cloud_node (11.2%)
+
+## 🏗️ System Architecture
+
+- **Backend:** Python 3.11+ with Flask, TensorFlow, PostgreSQL
+- **Frontend:** React 18 with TypeScript, Material-UI, Chart.js
+- **Infrastructure:** Docker, AWS (optional)
+- **Security:** Data integrity validation, threat detection, emergency stop
+
+## 📁 Repository Structure
+
+```
+├── PROJECT_REPORT.md              # Complete 70+ page report
+├── PRESENTATION_OUTLINE.md         # 22-slide presentation guide
+├── IMPLEMENTATION_PLAN.md          # Detailed technical roadmap
+├── STAGE2_COMPLETE_OVERVIEW.md     # Everything consolidated
+├── BEGINNER_GUIDE.md               # Simple explanations
+├── TEAM_MEETING_GUIDE.md           # Team coordination
+├── URGENT_ACTION_PLAN.md           # Submission checklist
+├── UML_DIAGRAMS_EXPLAINED.md      # UML guide
+├── UI_PROTOTYPES_EXPLAINED.md      # Prototype guide
+├── SECURITY_ENHANCEMENTS_SUMMARY.md # Security features
+├── uml_diagrams/                   # UML diagrams (6 files)
+│   ├── class_diagram.puml
+│   ├── use_case_diagram.puml
+│   ├── sequence_diagram_1_realtime_monitoring.puml
+│   ├── sequence_diagram_2_data_analysis.puml
+│   ├── sequence_diagram_3_data_import.puml
+│   └── sequence_diagram_4_security_validation.puml
+├── prototypes/                     # UI prototypes (5 files)
+│   ├── 01_main_dashboard.html
+│   ├── 02_realtime_monitor.html
+│   ├── 03_component_analysis.html
+│   ├── 04_anomaly_detection.html
+│   └── 05_data_import.html
+└── docs/                           # Additional documentation
+```
+
+## 🚀 Quick Start
+
+### **For Stage 2 Submission:**
+1. Read `STAGE2_COMPLETE_OVERVIEW.md` for everything you need
+2. Follow `URGENT_ACTION_PLAN.md` for submission steps
+3. Use `TEAM_MEETING_GUIDE.md` for team coordination
+
+### **For UML Diagrams:**
+1. Go to `uml_diagrams/` folder
+2. Use PlantUML to render diagrams: http://www.plantuml.com/plantuml/uml/
+3. Follow `UML_DIAGRAMS_EXPLAINED.md` for detailed instructions
+
+### **For UI Prototypes:**
+1. Go to `prototypes/` folder
+2. Open HTML files in browser
+3. Follow `UI_PROTOTYPES_EXPLAINED.md` for screenshot instructions
+
+## 📋 Stage 2 Deliverables
+
+- ✅ **Project Report** (70+ pages) - Complete system documentation
+- ✅ **UML Diagrams** (6 diagrams) - Class, Use Case, 4 Sequence diagrams
+- ✅ **UI Prototypes** (5 screens) - Complete dashboard mockups
+- ✅ **Implementation Plan** (40+ pages) - Detailed technical roadmap
+- ✅ **Presentation Outline** (22 slides) - Complete presentation guide
+
+## 🔒 Security Features
+
+- **Sensor Data Validation:** Checks data integrity before reaching control board
+- **Threat Detection:** LSTM-based anomaly detection with 94% accuracy
+- **Emergency Stop:** Automatic robot shutdown on security threats
+- **User Alerts:** Real-time notifications for security events
+- **Audit Logging:** Complete security event tracking
+
+## 👥 Team Members
+
+- **John Heitzman** (Project Manager) - maxheitzman@gmail.com
+- **Noah Küng** (Lead Developer) - noah.kueng.1@gmail.com
+- **Joseph Musangu** (Data Analyst) - tmusangu@ttu.edu
+- **Omotoyosi Adams** (UI/UX Designer) - omoadams@ttu.edu
+- **Delphin Iradukunda** (Documentation Specialist) - diraduku@ttu.edu
+
+## 📅 Timeline
+
+- **Stage 1:** Software Requirements Specification (Completed)
+- **Stage 2:** Software Design Specification (Due: October 23, 2025)
+- **Stage 3:** Implementation (Weeks 1-12)
+- **Final Presentation:** TBD
 
 ## 📞 Contact
 
 **Project Manager:** John Heitzman  
-**Email:** maxheitzman@gmail.com  
+**Email:** maxheitzman@gmail.com
 
-**Team Members:**
-- Noah Küng (Lead Developer) - noah.kueng.1@gmail.com
-- Joseph Musangu (Data Analyst) - tmusangu@ttu.edu
-- Omotoyosi Adams (UI/UX Designer) - omoadams@ttu.edu
-- Delphin Iradukunda (Documentation Specialist) - diraduku@ttu.edu
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🎉 You're Ready to Submit!
-
-Everything is complete. Just need to:
-1. Convert PROJECT_REPORT.md to PDF
-2. Create presentation slides from PRESENTATION_OUTLINE.md
-3. Practice as a team
-4. Submit and present!
-
-**Great work on Stage 2! 🚀**
-
+**Ready for Stage 2 submission! 🚀**
