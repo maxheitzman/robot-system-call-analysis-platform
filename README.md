@@ -6,11 +6,23 @@
 
 ## 👥 Team Members
 
-- **John Heitzman** (Project Leader) - AI Integration & Communications Lead & Touched Everything
+- **John Heitzman** (Project Manager) - Full-Stack Development, System Architecture, DevOps & AI Integration
 - **Noah Küng** (Lead Developer) - AI/ML Engineer
 - **Joseph Musangu** (Data Analyst) - Data Analysis/UI & UX
 - **Omotoyosi Adams** (UI/UX Designer) - Data Engineer
 - **Delphin Iradukunda** (Documentation Specialist) - Data Analysis Research
+
+### Technical Contributions by Role
+
+**John Heitzman (Max) - Primary Technical Contributions:**
+- **System Architecture:** ROS integration, backend API design, system architecture
+- **Full-Stack Development:** Backend Flask API, frontend dashboard enhancements, real-time processing
+- **AI/ML Implementation:** GPS prediction algorithms, boundary detection systems, LSTM training pipeline
+- **DevOps & Infrastructure:** Docker containerization, deployment automation, system integration
+- **Data Analysis Tools:** Graph generation, performance benchmarking, analysis scripts
+- **Testing & Validation:** System testing, validation frameworks, performance optimization
+
+*See [husky-dashboard/IMPLEMENTATION_COMPARISON.md](./husky-dashboard/IMPLEMENTATION_COMPARISON.md) for detailed technical contributions.*
 
 ## 📋 Project Overview
 
