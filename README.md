@@ -22,7 +22,7 @@
 - **Data Analysis Tools:** Graph generation, performance benchmarking, analysis scripts
 - **Testing & Validation:** System testing, validation frameworks, performance optimization
 
-*See [husky-dashboard/IMPLEMENTATION_COMPARISON.md](./husky-dashboard/IMPLEMENTATION_COMPARISON.md) for detailed technical contributions.*
+*See [Husky Dashboard Repository](https://github.com/maxheitzman/husky-dashboard) and [Implementation Comparison](https://github.com/maxheitzman/husky-dashboard/blob/main/IMPLEMENTATION_COMPARISON.md) for detailed technical contributions.*
 
 ## 📋 Project Overview
 
@@ -90,7 +90,7 @@ GPS Anomaly Detection Component:
 - Enhanced backend implementation
 - Implementation comparison document
 
-**See:** [husky-dashboard/README.md](./husky-dashboard/README.md) for details
+**See:** [Husky Dashboard Repository](https://github.com/maxheitzman/husky-dashboard) for details
 
 ### `/DoD SAFE-IRdf4AjAzcCACu3m/`
 Project data and resources:
