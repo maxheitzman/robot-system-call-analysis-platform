@@ -6,7 +6,7 @@
 
 ## 👥 Team Members
 
-- **John Heitzman** (Project Manager) - AI Integration & Communications Lead
+- **John Heitzman** (Project Leader) - AI Integration & Communications Lead & Touched Everything
 - **Noah Küng** (Lead Developer) - AI/ML Engineer
 - **Joseph Musangu** (Data Analyst) - Data Analysis/UI & UX
 - **Omotoyosi Adams** (UI/UX Designer) - Data Engineer
